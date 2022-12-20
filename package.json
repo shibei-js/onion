@@ -2,6 +2,14 @@
   "name": "@shibei-js/onion",
   "version": "0.0.0",
   "description": "Middleware framework based on async/await and onion model",
+  "scripts": {
+    "test": "nyc mocha",
+    "html": "nyc ---reporter=html mocha"
+  },
+  "main": "index.js",
+  "files": [
+    "lib/"
+  ],
   "devDependencies": {
     "chai": "^4.3.7",
     "mocha": "^10.2.0",
