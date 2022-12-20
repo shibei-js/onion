@@ -1,0 +1,9 @@
+{
+  "name": "@shibei-js/onion",
+  "version": "0.0.0",
+  "description": "Middleware framework based on async/await and onion model",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shibei-js/onion.git"
+  }
+}
