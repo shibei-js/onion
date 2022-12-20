@@ -106,4 +106,6 @@ module.exports = {
     ErrWarMultiNext,
     MidSync,
     EndSync,
+    TrueWare: MidWare,
+    FalseWare: EndWare,
 };
