@@ -3,8 +3,9 @@
   "version": "0.0.3",
   "description": "Middleware framework based on async/await and onion model",
   "scripts": {
-    "test": "nyc mocha",
-    "html": "nyc ---reporter=html mocha"
+    "test": "mocha",
+    "cov": "nyc mocha",
+    "cov:html": "nyc ---reporter=html mocha"
   },
   "main": "index.js",
   "files": [
