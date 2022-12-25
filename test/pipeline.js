@@ -12,7 +12,7 @@ const {
     msgWrong,
     ErrWareBeforeNext,
     ErrWareAfterNext,
-    ErrWarMultiNext,
+    ErrWareMultiNext,
     MidSync,
     EndSync,
 } = require('./util');
@@ -266,7 +266,7 @@ describe('Pipeline', () => {
                 const app = Pipeline(
                     MidWare(arr, [2, 3], [-1], 0, -1),
                     MidWare(arr, [4, 5], [-1], 1, -1),
-                    ErrWarMultiNext(arr, [6, 7], 2, 7),
+                    ErrWareMultiNext(arr, [6, 7], 2, 7),
                     MidWare(arr, [8, 9], [12, 13], 3, 6)
                 );
                 app(
@@ -296,7 +296,7 @@ describe('Pipeline', () => {
                 );
                 app(
                     ctx,
-                    ErrWarMultiNext(arr, [-1], 2, 3),
+                    ErrWareMultiNext(arr, [-1], 2, 3),
                     0, 1
                 )
                     .then(() => done(new Error(msgWrong)))
@@ -611,7 +611,7 @@ describe('Pipeline', () => {
                     MidWare(arr, [2, 3], [-1], 0, -1),
                     Pipeline(
                         MidWare(arr, [4, 5], [-1], 1, -1),
-                        ErrWarMultiNext(arr, [6, 7], 2, 11),
+                        ErrWareMultiNext(arr, [6, 7], 2, 11),
                         MidWare(arr, [8, 9], [20, 21], 3, 10)
                     ),
                     MidWare(arr, [10, 11], [18, 19], 4, 9)
@@ -652,7 +652,7 @@ describe('Pipeline', () => {
                     ctx,
                     Pipeline(
                         MidWare(arr, [10, 11], [-1], 4, -1),
-                        ErrWarMultiNext(arr, [12, 13], 5, 8),
+                        ErrWareMultiNext(arr, [12, 13], 5, 8),
                         MidWare(arr, [-1], [14, 15], 6, 7)
                     ),
                     0, 1

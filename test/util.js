@@ -63,7 +63,7 @@ function ErrWareAfterNext(arr, a1, c1, c2) {
     };
 }
 
-function ErrWarMultiNext(arr, a1, c1, c2) {
+function ErrWareMultiNext(arr, a1, c1, c2) {
     return async (ctx, next, ...args) => {
         await asyncArrayPush(arr, ...args);
         await asyncArrayPush(ctx, c1);
@@ -103,7 +103,7 @@ module.exports = {
     msgWrong,
     ErrWareBeforeNext,
     ErrWareAfterNext,
-    ErrWarMultiNext,
+    ErrWareMultiNext,
     MidSync,
     EndSync,
     TrueWare: MidWare,
