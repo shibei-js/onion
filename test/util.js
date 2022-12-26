@@ -92,6 +92,15 @@ function EndSync(arr, a1, c1) {
     };
 }
 
+function ErrSyncBeforeNext(arr, c1) {
+    return (ctx, next, ...args) => {
+        for (const a of args) arr.push(a);
+        ctx.push(c1);
+        throw new Error(msgRight);
+        return next(-1);
+    };
+}
+
 module.exports = {
     range,
     random,
@@ -106,6 +115,7 @@ module.exports = {
     ErrWareMultiNext,
     MidSync,
     EndSync,
+    ErrSyncBeforeNext,
     TrueWare: MidWare,
     FalseWare: EndWare,
 };

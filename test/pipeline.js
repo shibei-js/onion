@@ -15,6 +15,7 @@ const {
     ErrWareMultiNext,
     MidSync,
     EndSync,
+    ErrSyncBeforeNext,
 } = require('./util');
 
 describe('Pipeline', () => {
@@ -779,6 +780,48 @@ describe('Pipeline', () => {
             arr.push(...rets);
             expect(arr).to.eql(range(18));
             expect(ctx).to.eql(range(8));
+        });
+
+        describe('Error capture', () => {
+
+            it('Throw error before next() in middleware', done => {
+                const arr = [], ctx = [];
+                try {
+                    const app = Pipeline(
+                        ErrSyncBeforeNext(arr, 0)
+                    );
+                    app(
+                        ctx,
+                        MidSync(arr, [-1], -1),
+                        0, 1
+                    );
+                    done(new Error(msgWrong));
+                } catch (err) {
+                    expect(err.message).to.equal(msgRight);
+                    expect(arr).to.eql(range(2));
+                    expect(ctx).to.eql(range(1));
+                    done();
+                }
+            });
+
+            it('Throw error before next() in next()', done => {
+                const arr = [], ctx = [];
+                try {
+                    const app = Pipeline();
+                    app(
+                        ctx,
+                        ErrSyncBeforeNext(arr, 0),
+                        0, 1
+                    );
+                    done(new Error(msgWrong));
+                } catch (err) {
+                    expect(err.message).to.equal(msgRight);
+                    expect(arr).to.eql(range(2));
+                    expect(ctx).to.eql(range(1));
+                    done();
+                }
+            });
+
         });
 
     });
