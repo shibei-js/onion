@@ -125,12 +125,12 @@ describe('Pipeline', () => {
             expect(ctx).to.eql(range(3));
         });
 
-        it('Should work with pipeline.use() (1)', async () => {
+        it('Should work with pipeline.push() (1)', async () => {
             const arr = [], ctx = [];
             const rets = await Pipeline()
-                .use(MidWare(arr, [2, 3], [10, 11], 0, 5))
-                .use(MidWare(arr, [4, 5], [8, 9], 1, 4))
-                .use(MidWare(arr, [-1], [6, 7], 2, 3))
+                .push(MidWare(arr, [2, 3], [10, 11], 0, 5))
+                .push(MidWare(arr, [4, 5], [8, 9], 1, 4))
+                .push(MidWare(arr, [-1], [6, 7], 2, 3))
                 (
                     ctx,
                     undefined,
@@ -141,11 +141,11 @@ describe('Pipeline', () => {
             expect(ctx).to.eql(range(6));
         });
 
-        it('Should work with pipeline.use() (2)', async () => {
+        it('Should work with pipeline.push() (2)', async () => {
             const arr = [], ctx = [];
             const rets = await Pipeline()
-                .use(MidWare(arr, [2, 3], [10, 11], 0, 5))
-                .use(MidWare(arr, [4, 5], [8, 9], 1, 4))
+                .push(MidWare(arr, [2, 3], [10, 11], 0, 5))
+                .push(MidWare(arr, [4, 5], [8, 9], 1, 4))
                 (
                     ctx,
                     MidWare(arr, [-1], [6, 7], 2, 3),
@@ -444,27 +444,27 @@ describe('Pipeline', () => {
             expect(ctx).to.eql(range(15));
         });
 
-        it('Should work with pipeline.use()', async () => {
+        it('Should work with pipeline.push()', async () => {
             const arr = [], ctx = [];
             const rets = await Pipeline()
-                .use(MidWare(arr, [2, 3], [34, 35], 0, 17))
-                .use(
+                .push(MidWare(arr, [2, 3], [34, 35], 0, 17))
+                .push(
                     Pipeline()
-                        .use(MidWare(arr, [4, 5], [32, 33], 1, 16))
-                        .use(MidWare(arr, [6, 7], [30, 31], 2, 15))
+                        .push(MidWare(arr, [4, 5], [32, 33], 1, 16))
+                        .push(MidWare(arr, [6, 7], [30, 31], 2, 15))
                 )
-                .use(MidWare(arr, [8, 9], [28, 29], 3, 14))
-                .use(
+                .push(MidWare(arr, [8, 9], [28, 29], 3, 14))
+                .push(
                     Pipeline()
-                        .use(MidWare(arr, [10, 11], [26, 27], 4, 13))
-                        .use(MidWare(arr, [12, 13], [24, 25], 5, 12))
+                        .push(MidWare(arr, [10, 11], [26, 27], 4, 13))
+                        .push(MidWare(arr, [12, 13], [24, 25], 5, 12))
                 )
-                .use(MidWare(arr, [14, 15], [22, 23], 6, 11))
+                .push(MidWare(arr, [14, 15], [22, 23], 6, 11))
                 (
                     ctx,
                     Pipeline()
-                        .use(MidWare(arr, [16, 17], [20, 21], 7, 10))
-                        .use(MidWare(arr, [-1], [18, 19], 8, 9)),
+                        .push(MidWare(arr, [16, 17], [20, 21], 7, 10))
+                        .push(MidWare(arr, [-1], [18, 19], 8, 9)),
                     0, 1
                 )
             arr.push(...rets);
