@@ -1,6 +1,6 @@
 {
   "name": "@shibei-js/onion",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Middleware framework based on async/await and onion model",
   "scripts": {
     "test": "mocha",
