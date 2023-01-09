@@ -156,6 +156,39 @@ describe('Pipeline', () => {
             expect(ctx).to.eql(range(6));
         });
 
+        it('Should work with array of middlewares (1)', async () => {
+            const arr = [], ctx = [];
+
+            const mws = [
+                MidWare(arr, [0, 1], [8, 9], 0, 5),
+                MidWare(arr, [2, 3], [6, 7], 1, 4),
+                MidWare(arr, [-1], [4, 5], 2, 3)
+            ];
+            const pipeline = Pipeline(mws);
+
+            const rets = await pipeline(ctx);
+            arr.push(...rets);
+
+            expect(arr).to.eql(range(10));
+            expect(ctx).to.eql(range(6));
+        });
+
+        it('Should work with array of middlewares (2)', async () => {
+            const arr = [], ctx = [];
+
+            const mws = [];
+            const pipeline = Pipeline(mws);
+            mws.push(MidWare(arr, [0, 1], [8, 9], 0, 5));
+            mws.push(MidWare(arr, [2, 3], [6, 7], 1, 4));
+            mws.push(MidWare(arr, [-1], [4, 5], 2, 3));
+
+            const rets = await pipeline(ctx);
+            arr.push(...rets);
+
+            expect(arr).to.eql(range(10));
+            expect(ctx).to.eql(range(6));
+        });
+
         describe('Error capture', () => {
 
             it('Throw error before next() in middleware', done => {
