@@ -169,6 +169,7 @@ describe('Pipeline', () => {
             const rets = await pipeline(ctx);
             arr.push(...rets);
 
+            expect(pipeline.middlewares).to.equal(mws);
             expect(arr).to.eql(range(10));
             expect(ctx).to.eql(range(6));
         });
@@ -185,8 +186,46 @@ describe('Pipeline', () => {
             const rets = await pipeline(ctx);
             arr.push(...rets);
 
+            expect(pipeline.middlewares).to.equal(mws);
             expect(arr).to.eql(range(10));
             expect(ctx).to.eql(range(6));
+        });
+
+        it('Should expose "middlewares" property (1)', async () => {
+            const arr = [], ctx = [];
+
+            const pipeline = Pipeline();
+            const rets = await pipeline(
+                ctx,
+                MidWare(arr, [-1], [2, 3], 0, 1),
+                0, 1
+            );
+            arr.push(...rets);
+
+            expect(pipeline.middlewares).to.eql([]);
+            expect(arr).to.eql(range(4));
+            expect(ctx).to.eql(range(2));
+        });
+
+        it('Should expose "middlewares" property (2)', async () => {
+            const arr = [], ctx = [];
+
+            const pipeline = Pipeline(
+                MidWare(arr, [-1], [-1], -1, -1)
+            );
+            pipeline.middlewares = [
+                MidWare(arr, [2, 3], [6, 7], 0, 3)
+            ];
+            const rets = await pipeline(
+                ctx,
+                MidWare(arr, [-1], [4, 5], 1, 2),
+                0, 1
+            );
+            arr.push(...rets);
+
+            expect(pipeline.middlewares.length).to.eql(1);
+            expect(arr).to.eql(range(8));
+            expect(ctx).to.eql(range(4));
         });
 
         describe('Error capture', () => {
