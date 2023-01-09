@@ -149,6 +149,55 @@ describe('Circuit', () => {
             expect(ctx).to.eql(range(3));
         });
 
+        it('Expose "condition" and "middleware" properties (1)', async () => {
+            const circuit = Circuit();
+            await circuit();
+
+            expect(circuit.condition).to.equal(undefined);
+            expect(circuit.middleware).to.equal(undefined);
+        });
+
+        it('Expose "condition" and "middleware" properties (2)', async () => {
+            const arr = [], ctx = [];
+
+            const cond = TrueWare(arr, [2, 3], [10, 11], 0, 5);
+            const mw = MidWare(arr, [4, 5], [8, 9], 1, 4);
+            const circuit = Circuit(cond, mw);
+
+            const rets = await circuit(
+                ctx,
+                MidWare(arr, [-1], [6, 7], 2, 3),
+                0, 1
+            );
+            arr.push(...rets);
+
+            expect(circuit.condition).to.equal(cond);
+            expect(circuit.middleware).to.equal(mw);
+            expect(arr).to.eql(range(12));
+            expect(ctx).to.eql(range(6));
+        });
+
+        it.skip('Expose "condition" and "middleware" properties (3)', async () => {
+            const arr = [], ctx = [];
+
+            const circuit = Circuit(
+                MidWare(arr, [-1], [-1], -1, -1),
+                MidWare(arr, [-1], [-1], -1, -1)
+            );
+            circuit.condition = TrueWare(arr, [2, 3], [10, 11], 0, 5);
+            circuit.middleware = MidWare(arr, [4, 5], [8, 9], 1, 4);
+
+            const rets = await circuit(
+                ctx,
+                MidWare(arr, [-1], [6, 7], 2, 3),
+                0, 1
+            );
+            arr.push(...rets);
+
+            expect(arr).to.eql(range(12));
+            expect(ctx).to.eql(range(6));
+        });
+
     });
 
     describe('Nested usage', () => {
