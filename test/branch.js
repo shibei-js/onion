@@ -149,6 +149,55 @@ describe('Branch', () => {
             expect(ctx).to.eql(range(3));
         });
 
+        it('Expose "condition" and "middleware" properties (1)', async () => {
+            const branch = Branch();
+            await branch();
+
+            expect(branch.condition).to.equal(undefined);
+            expect(branch.middleware).to.equal(undefined);
+        });
+
+        it('Expose "condition" and "middleware" properties (2)', async () => {
+            const arr = [], ctx = [];
+
+            const cond = TrueWare(arr, [2, 3], [6, 7], 0, 3);
+            const mw = MidWare(arr, [-1], [4, 5], 1, 2);
+            const branch = Branch(cond, mw);
+
+            const rets = await branch(
+                ctx,
+                MidWare(arr, [-1], [-1], -1, -1),
+                0, 1
+            );
+            arr.push(...rets);
+
+            expect(branch.condition).to.equal(cond);
+            expect(branch.middleware).to.equal(mw);
+            expect(arr).to.eql(range(8));
+            expect(ctx).to.eql(range(4));
+        });
+
+        it('Expose "condition" and "middleware" properties (3)', async () => {
+            const arr = [], ctx = [];
+
+            const branch = Branch(
+                MidWare(arr, [-1], [-1], -1, -1),
+                MidWare(arr, [-1], [-1], -1, -1)
+            );
+            branch.condition = TrueWare(arr, [2, 3], [6, 7], 0, 3);
+            branch.middleware = MidWare(arr, [-1], [4, 5], 1, 2);
+
+            const rets = await branch(
+                ctx,
+                MidWare(arr, [-1], [-1], -1, -1),
+                0, 1
+            );
+            arr.push(...rets);
+
+            expect(arr).to.eql(range(8));
+            expect(ctx).to.eql(range(4));
+        });
+
     });
 
     describe('Nested usage', () => {
